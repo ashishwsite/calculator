@@ -1,25 +1,15 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import DataS from "./components/DataS";
+import ButtonC from "./components/ButtonC";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div >
+      <h1 style={{textAlign:'center',fontFamily:'fantasy',font:'15px', marginTop:'15px'}}>MIni Calcultor</h1>
+      <ButtonC/>
     </div>
-  );
+     
+  )
 }
 
 export default App;
