@@ -1,96 +1,86 @@
 import React, { useState } from "react";
 import "./ButtonC.css";
-
 const ButtonC = () => {
   const [d1, setd1] = useState("");
-  const [history,sethistory]=useState([]);
+  const [history, sethistory] = useState([]);
   const [data, setdata] = useState("");
-  const [res,setres]=useState(null)
+  const [res, setres] = useState(null);
   var s1 = "";
-  var s2 = "";
-  var a = 0;
- 
-  
-  var op =null
   var b = "<";
-  var ans;
-  function isoperator(ch ){
-    if(ch==='+'||ch==='-'||ch==='*'||ch==='/'||ch==='%'){
-      return true;
+  // solve function
+  function calculate(s) {
+    const stack = [];
+    let sign = "+";
+    let num = 0;
+    for (let i = 0; i < s.length; i++) {
+      const c = s[i];
+      if (!isNaN(parseInt(c))) {
+        num = num * 10 + parseInt(c);
+      }
+      if (
+        i + 1 === s.length ||
+        c === "+" ||
+        c === "-" ||
+        c === "*" ||
+        c === "/"
+      ) {
+        if (sign === "+") {
+          stack.push(num);
+        } else if (sign === "-") {
+          stack.push(-num);
+        } else if (sign === "*") {
+          stack[stack.length - 1] *= num;
+        } else if (sign === "/") {
+          stack[stack.length - 1] = Math.trunc(stack[stack.length - 1] / num);
+        }
+        sign = c;
+        num = 0;
+      }
     }
+    let result = 0;
+    for (let num of stack) {
+      result += num;
+    }
+    return result;
   }
   function handleclick(para) {
-    if(para==='='){
-      var st="";
-      var foi=-1;
-      var op='0';
-      for(var i=0;i<d1.length;i++){
-           if(isoperator(d1[i])){
-            op=d1[i];
-            foi=i;
-            break;
-           }
-           st=st+d1[i];
-      }
-      var st2="";
-      var ans=st-'0';
-      // console.log("foi",foi, "ans",ans,"op",op)
-      for(var i=foi+1;i<d1.length;i++){
-        // console.log(ans);
-        if(isoperator(d1[i])){
-          if(op==='+'){ ans=ans+(st2-'0')}
-         else if(op==='-'){ ans=ans-(st2-'0')}
-         else if(op==='*'){ ans=ans*(st2-'0')}
-         else  if(op==='/'){ ans=ans/(st2-'0')}
-         else if(op==='%'){ ans=ans%(st2-'0')}
-         op=d1[i];
-         st2="";
-        }
-        else  st2=st2+d1[i];
-      }
-      // console.log(st2)
-         if(op==='+'){ ans=ans+(st2-'0')}
-         else if(op==='-'){ ans=ans-(st2-'0')}
-         else if(op==='*'){ ans=ans*(st2-'0')}
-         else  if(op==='/'){ ans=ans/(st2-'0')}
-         else if(op==='%'){ ans=ans%(st2-'0')}
-      // ans=a+(st-'0');
-      console.log(ans);
-     sethistory(ans);
+    if (para === "=") {
+      var input = d1;
+      console.log("d1", d1);
+      const ans = calculate(input);
+      console.log("ans", ans);
+      sethistory(ans);
       setres(ans);
-      setdata(d1+"=");
-      setd1("")
+      setdata(d1 + "=");
+      setd1("");
     }
-   else{
-    s1 = d1.concat(para);
-    setd1(s1);
-   }
-  
+
+    // else
+    else {
+      s1 = d1.concat(para);
+      setd1(s1);
+    }
   }
-  function handleCencel(){
-    setres("")
-    setdata("")
+  function handleCencel() {
+    setres("");
+    setdata("");
   }
-  function handleBack(){
-    var nst=d1;
-    let finalstrig =nst.slice(0, -1); 
+  function handleBack() {
+    var nst = d1;
+    let finalstrig = nst.slice(0, -1);
     setd1(finalstrig);
     console.log(d1);
   }
-function handleHistory(){
-  
-}
+  function handleHistory() {}
   return (
     <>
-      <div
-        style={{ textAlign: "center", padding: "10px", color:"red"}}
-      >
-        <h5>{(!d1)?data:d1}</h5>
-        <h3>Ans:{(!res) ?null :res } </h3>
+      <div style={{ textAlign: "center", padding: "10px", color: "red" }}>
+        <h5>{!d1 ? data : d1}</h5>
+        <h3>Ans:{!res ? null : res} </h3>
       </div>
       <div
         className="maindiv"
-        style={{ display: "flex", justifyContent: "center", padding:"23px" }}
+        style={{ display: "flex", justifyContent: "center", padding: "23px" }}
       >
         <table>
           <tr>
@@ -292,9 +282,8 @@ function handleHistory(){
             </td>
           </tr>
         </table>
-       
       </div>
-      <div style={{textAlign: "center"}}>History={history}</div>
+      <div style={{ textAlign: "center" }}>History={history}</div>
     </>
   );
 };
